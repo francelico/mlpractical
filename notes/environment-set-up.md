@@ -46,8 +46,14 @@ Append at the end
 ```
 source /group/teaching/conda/etc/profile.d/conda.sh
 ```
-This should be enough to enable conda and give you access to your packages. Please continue from the 'Creating the Conda environment section' if you have taken this path.
+This should be enough to enable conda and give you access to your packages every time to open a terminal. Please continue from the 'Creating the Conda environment section' if you have taken this path.
 
+Also, do not forget to run
+
+```
+source ~/.bashrc
+```
+In your current terminal session to get conda (automatic sourcing of .bashrc happens only when a new terminal is opened).
 
 
 ## 3. Installing Miniconda From Scratch - Only do this step if you have chosen not to do step 2
