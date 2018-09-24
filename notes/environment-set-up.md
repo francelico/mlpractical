@@ -16,7 +16,6 @@ Conda can handle installation of the Python libraries we will be using and all t
 
 There are several options available for installing Conda on a system. Here we will use the Python 3 version of [Miniconda](http://conda.pydata.org/miniconda.html), which installs just Conda and its dependencies. An alternative is to install the [Anaconda Python distribution](https://docs.continuum.io/anaconda/), which installs Conda and a large selection of popular Python packages. As we will require only a small subset of these packages we will use the more barebones Miniconda to avoid eating into your DICE disk quota too much, however if installing on a personal machine you may wish to consider Anaconda if you want to explore other Python packages.
 
-# Choosing how to access conda:
 
 To proceed please choose either step 2 or 3. Do not execute both steps. Choose the one that best works with your course selections / machine setup.
 
@@ -133,7 +132,7 @@ Append at the end
 source ~/.benv
 ```
 
-## 4. Creating the Conda environment
+## 3. Creating the Conda environment
 
 You should now have a working Conda installation. If you run
 
@@ -184,7 +183,21 @@ conda clean -t
 
 These tarballs are usually cached to allow quicker installation into additional environments however we will only be using a single environment here so there is no need to keep them on disk.
 
-## 5. Getting the course code and a short introduction to Git
+***ANLP and IAML students only:***
+To have normal access to your ANLP and IAML environments please do the following:
+1. ```nano .condarc```
+2. Add the following lines in the file:
+```
+envs_dirs:
+ - /group/teaching/conda/envs
+
+pkgs_dirs:
+ - /group/teaching/conda/pkgs
+ - ~/miniconda3/pkgs
+```
+3. Exit by using control + x and then choosing 'yes' at the exit prompt.
+
+## 4. Getting the course code and a short introduction to Git
 
 The next step in getting our environment set up will be to download the course code. This is available in a Git repository on Github:
 
