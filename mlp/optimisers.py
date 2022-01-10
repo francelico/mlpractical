@@ -40,9 +40,27 @@ class Optimiser(object):
         self.learning_rule.initialise(self.model.params)
         self.train_dataset = train_dataset
         self.valid_dataset = valid_dataset
-        self.data_monitors = OrderedDict([('error', error)])
+        self.grads_wrt_outputs = 0.
+        self.grads_wrt_params = [0., 0.]
+        self.data_monitors = OrderedDict([('error', error), ('grads_output', self.data_monitor_grads_output),
+                                          ('grads_weights', self.data_monitor_grads_weights),
+                                          ('grads_biases', self.data_monitor_grads_biases)])
         if data_monitors is not None:
             self.data_monitors.update(data_monitors)
+
+    def data_monitor_grads_output(self, outputs, targets):
+
+        grads_wrt_outputs = self.error.grad(outputs, targets)
+
+        return np.mean(np.abs(grads_wrt_outputs))
+
+    def data_monitor_grads_weights(self, outputs, targets):
+
+        return np.mean(np.abs(self.grads_wrt_params[0]))
+
+    def data_monitor_grads_biases(self, outputs, targets):
+
+        return np.mean(np.abs(self.grads_wrt_params[1]))
 
     def do_training_epoch(self):
         """Do a single training epoch.
@@ -54,10 +72,10 @@ class Optimiser(object):
         """
         for inputs_batch, targets_batch in self.train_dataset:
             activations = self.model.fprop(inputs_batch)
-            grads_wrt_outputs = self.error.grad(activations[-1], targets_batch)
-            grads_wrt_params = self.model.grads_wrt_params(
-                activations, grads_wrt_outputs)
-            self.learning_rule.update_params(grads_wrt_params)
+            self.grads_wrt_outputs = self.error.grad(activations[-1], targets_batch)
+            self.grads_wrt_params = self.model.grads_wrt_params(
+                activations, self.grads_wrt_outputs)
+            self.learning_rule.update_params(self.grads_wrt_params)
 
     def eval_monitors(self, dataset, label):
         """Evaluates the monitors for the given dataset.
