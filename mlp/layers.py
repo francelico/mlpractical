@@ -294,6 +294,50 @@ class SoftmaxLayer(Layer):
         return 'SoftmaxLayer'
 
 
+class TanhLayer(Layer):
+    """Layer implementing an element-wise hyperbolic tangent transformation."""
+
+    def fprop(self, inputs):
+        """Forward propagates activations through the layer transformation.
+
+        For inputs `x` and outputs `y` this corresponds to `y = tanh(x)`.
+        """
+        return np.tanh(inputs)
+
+    def bprop(self, inputs, outputs, grads_wrt_outputs):
+        """Back propagates gradients through a layer.
+
+        Given gradients with respect to the outputs of the layer calculates the
+        gradients with respect to the layer inputs.
+        """
+        return (1. - outputs**2) * grads_wrt_outputs
+
+    def __repr__(self):
+        return 'TanhLayer'
+    
+
+class ReluLayer(Layer):
+    """Layer implementing an element-wise rectified linear transformation."""
+
+    def fprop(self, inputs):
+        """Forward propagates activations through the layer transformation.
+
+        For inputs `x` and outputs `y` this corresponds to `y = max(0, x)`.
+        """
+        return np.maximum(inputs, 0.)
+
+    def bprop(self, inputs, outputs, grads_wrt_outputs):
+        """Back propagates gradients through a layer.
+
+        Given gradients with respect to the outputs of the layer calculates the
+        gradients with respect to the layer inputs.
+        """
+        return (outputs > 0) * grads_wrt_outputs
+
+    def __repr__(self):
+        return 'ReluLayer'
+
+
 class RadialBasisFunctionLayer(Layer):
     """Layer implementing projection to a grid of radial basis functions."""
 
