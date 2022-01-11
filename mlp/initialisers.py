@@ -63,3 +63,75 @@ class NormalInit(object):
 
     def __call__(self, shape):
         return self.rng.normal(loc=self.mean, scale=self.std, size=shape)
+
+
+class SqrtInit(object):
+    """Random normal parameter initialiser with variance equal to inverse of input layer dimension."""
+
+    def __init__(self, rng=None):
+        """Construct a random uniform parameter initialiser.
+
+        Args:
+            rng (RandomState): Seeded random number generator.
+        """
+        self.mean = 0
+        if rng is None:
+            rng = np.random.RandomState(DEFAULT_SEED)
+        self.rng = rng
+
+    def __call__(self, shape):
+        return self.rng.normal(loc=self.mean, scale=1/np.sqrt(shape[1]), size=shape)
+
+
+class XavierInit(object):
+    """Xavier layer parameter initialiser."""
+
+    def __init__(self, rng=None):
+        """Construct a random uniform parameter initialiser.
+
+        Args:
+            rng (RandomState): Seeded random number generator.
+        """
+
+        if rng is None:
+            rng = np.random.RandomState(DEFAULT_SEED)
+        self.rng = rng
+
+    def __call__(self, shape):
+        return self.rng.uniform(low=-np.sqrt(6 / (shape[0] + shape[1])), high=np.sqrt(6 / (shape[0] + shape[1])), size=shape)
+
+
+class XavierInitNormal(object):
+    """Xavier layer parameter initialiser - Normal distribution variation."""
+
+    def __init__(self, rng=None):
+        """Construct a random uniform parameter initialiser.
+
+        Args:
+            rng (RandomState): Seeded random number generator.
+        """
+        self.mean = 0
+        if rng is None:
+            rng = np.random.RandomState(DEFAULT_SEED)
+        self.rng = rng
+
+    def __call__(self, shape):
+        return self.rng.normal(loc=self.mean, scale=np.sqrt(2 / (shape[0] + shape[1])), size=shape)
+
+
+class KaimingInit(object):
+    """Kaiming layer parameter initialiser."""
+
+    def __init__(self, rng=None):
+        """Construct a random uniform parameter initialiser.
+
+        Args:
+            rng (RandomState): Seeded random number generator.
+        """
+        self.mean = 0
+        if rng is None:
+            rng = np.random.RandomState(DEFAULT_SEED)
+        self.rng = rng
+
+    def __call__(self, shape):
+        return self.rng.normal(loc=self.mean, scale=np.sqrt(2 / shape[1]), size=shape)
